@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom'
 import { register } from '../../endpoints/endpoints'
 
 const RegistroPage = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [role, setRole] = useState('admin')
+    const [form, setForm] = useState({email: '', password: '', role: 'admin'})
     const [viewAlert, setViewAlert] = useState(false)   
     const [alert, setAlert] = useState('')
     const [error, setError] = useState('')
@@ -33,8 +31,18 @@ const RegistroPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(email, password, role)
-        registrar(email, password, role)
+        console.log(form)
+        registrar(form.email, form.password, form.role)
+    }
+
+    const handleChange = (e) => {
+        console.log(e.target.name, e.target.value)
+        setForm(
+            {
+                ...form,
+                [e.target.name]: e.target.value
+            }
+        )
     }
 
 
@@ -48,15 +56,15 @@ const RegistroPage = () => {
                 {viewAlert && alert && <div className='alert'>{alert}</div>}
                 <div className='form-group'>
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="text" placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+                    <input id="email" name="email" type="text" placeholder="email" onChange={handleChange} />
                 </div>
                 <div className='form-group'>
                     <label htmlFor="password">Password</label>
-                    <input id='password' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                    <input id='password' name="password" type="password" placeholder="Password" onChange={handleChange}/>
                 </div>
                 <div className='form-group'>
                     <label htmlFor="role">Role</label>
-                    <select id="role"onChange={(e) => setRole(e.target.value)}>
+                    <select id="role" name="role" onChange={handleChange}>
                         <option value="admin">Admin</option>
                         <option value="user">User</option>
                     </select>

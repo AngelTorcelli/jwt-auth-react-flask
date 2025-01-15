@@ -4,8 +4,7 @@ import { login } from '../../endpoints/endpoints'
 import { useAuth } from '../../context/authcontext'
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [form, setForm] = useState({email: '', password: ''})    
     const { setUserRole, loading } = useAuth();
     const [error, setError] = useState('')
     const [viewAlert, setViewAlert] = useState(false)   
@@ -35,8 +34,18 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(email, password)
-        loginUser(email, password)
+        console.log(form)
+        loginUser(form.email, form.password)
+    }
+
+    const handleChange = (e) => {
+        //console.log(e.target.name, e.target.value)
+        setForm(
+            {
+                ...form,
+                [e.target.name]: e.target.value
+            }
+        )
     }
 
 
@@ -49,11 +58,11 @@ const LoginPage = () => {
                 {viewAlert && <div className='error'>{error}</div>}
                 <div className='form-group'>
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="text" placeholder="Username" onChange={(e) => setEmail(e.target.value)}/>
+                    <input id="email" name='email' type="text" placeholder="Username" onChange={handleChange}/>
                 </div>
                 <div className='form-group'>
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                    <input id="password" name='password' type="password" placeholder="Password" onChange={handleChange}/>
                 </div>
                 <button type="submit">Login</button>
                 <small>No tienes cuenta? <Link to="/registro">Registro</Link></small>
